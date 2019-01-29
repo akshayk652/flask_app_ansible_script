@@ -1,0 +1,41 @@
+---
+- name: install nginx
+  apt:
+    name: nginx
+    state: latest
+  become: yes
+    
+- name:
+  template:
+    src: pg_hunt.j2
+    dest: /etc/nginx/sites-available/pg_hunt
+    owner: root
+    group: root
+  become: yes
+
+- name: Delete Default file of Nginx sites-available
+  file:
+    dest: /etc/nginx/sites-available/default
+    state: absent
+  become: yes
+
+- name: Delete Default file of Nginx sites-enabled
+  file:
+    dest: /etc/nginx/sites-enabled/default
+    state: absent
+  become: yes
+
+- name: To enable the Nginx server block configuration, link the file to the sites-enabled directory
+  file:
+    src: /etc/nginx/sites-available/pg_hunt
+    dest: /etc/nginx/sites-enabled/pg_hunt
+    state: link
+    owner: ubuntu
+    group: ubuntu
+  become: yes
+
+- name: Make sure nginx is running
+  systemd:
+    state: started
+    service: nginx
+  become: yes

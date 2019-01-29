@@ -1,0 +1,8 @@
+- hosts: web
+  roles:
+    # - python36
+    # - pg_hunt
+    # - nginx
+    # - gunicorn
+    # - rabbitmq
+    - celery

@@ -1,0 +1,48 @@
+---
+# tasks file for celery
+- name: Create conf.d
+  file:
+    path: /etc/conf.d/
+    state: directory
+  become: yes
+
+- name: Create /var/log/celery
+  file:
+    path: /var/log/celery
+    state: directory
+    owner: ubuntu
+    group: ubuntu
+    mode: 0755
+  become: yes
+
+- name: Create /var/run/celery
+  file:
+    path: /var/run/celery
+    state: directory
+    owner: ubuntu
+    group: ubuntu
+    mode: 0755
+  become: yes
+
+- name: Copy Celery config file
+  copy:
+    src: ./../files/celery
+    dest: /etc/conf.d/celery
+    owner: ubuntu
+    group: ubuntu
+  become: yes
+
+- name: Copy celery.service
+  copy:
+    src:  ./../files/celery.service
+    dest: /etc/systemd/system/celery.service
+    owner: ubuntu
+    group: ubuntu
+  become: yes
+  
+- name: Start celery
+  systemd:
+    state: started
+    name: celery
+    daemon_reload: yes
+  become: yes

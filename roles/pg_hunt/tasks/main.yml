@@ -1,0 +1,31 @@
+---
+- name: clone source directory
+  git:
+    repo: https://github.com/akshayk652/flask_pg_hunt.git
+    dest: ~/pg_hunt
+
+- name: Install pip3
+  apt:
+    pkg: python3-pip
+    state: present
+    update_cache: true
+  become: yes
+
+- name: Install Setuptools
+  apt:
+    pkg: python3-setuptools
+    state: present
+    update-cache: true
+  become: yes
+
+- name: Install virtualenv via pip
+  apt:
+   name: virtualenv
+   state: present
+  become: yes
+
+- name: Install requirements
+  pip:
+   requirements: ~/pg_hunt/requirements.txt
+   virtualenv: ~/pg_hunt/venv
+   virtualenv_command: pyvenv

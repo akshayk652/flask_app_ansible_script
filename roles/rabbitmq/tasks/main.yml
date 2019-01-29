@@ -1,0 +1,13 @@
+---
+# tasks file for rabbitmq
+- name: Install RabbitMq server
+  apt:
+    name: rabbitmq-server
+    update_cache: yes
+  become: yes
+  
+- name: start rabbitmq
+  systemd:
+    state: started
+    name: rabbitmq-server
+  become: yes

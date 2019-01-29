@@ -1,0 +1,28 @@
+---
+- name: Install Gunicorn
+  pip:
+       chdir=/home/ubuntu/pg_hunt/
+       name=gunicorn
+       virtualenv=venv
+  register: gunicorninstalled
+
+- name: Place gunicorn.service file in systemd directory
+  template:
+    src: gunicorn.service.j2
+    dest: /etc/systemd/system/gunicorn.service
+    owner: root
+    group: root
+  become: yes
+
+- name: Make sure gunicorn is running
+  systemd:
+    state: started
+    service: gunicorn
+    daemon_reload: yes
+  become: yes
+
+- name: Enable gunicorn
+  systemd:
+    service: gunicorn
+    enabled: yes
+  become: yes    
